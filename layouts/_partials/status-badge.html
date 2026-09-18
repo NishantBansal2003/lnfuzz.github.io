@@ -1,0 +1,15 @@
+{{- /*
+  Status badge. Takes the status string.
+
+  Green means landed. Amber means live. Muted means present and honest but not
+  demanding attention.
+*/ -}}
+{{- $class := "badge-open" -}}
+{{- $label := . -}}
+{{- if eq . "fixed" -}}
+  {{- $class = "badge-fixed" -}}
+{{- else if eq . "wontfix" -}}
+  {{- $class = "badge-muted" -}}
+  {{- $label = "won't fix" -}}
+{{- end -}}
+<span class="badge {{ $class }}">{{ $label }}</span>

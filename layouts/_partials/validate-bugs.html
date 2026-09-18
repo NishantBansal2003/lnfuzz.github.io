@@ -1,0 +1,34 @@
+{{- /*
+  Validates data/bugs.yaml at build time, so a malformed entry fails the build
+  instead of rendering a blank cell. Called exactly once, from /bugs/, to avoid
+  duplicate reports.
+
+  Emits nothing.
+*/ -}}
+{{- $targets := slice "lnd" "cln" "ldk" "eclair" "spec" -}}
+{{- $statuses := slice "fixed" "reported" "wontfix" -}}
+{{- $impacts := slice "theft" "grief" "dos" "crash" "debug-assert" "ub" "uninit" "liveness" "spec" -}}
+{{- $seen := slice -}}
+{{- range $i, $b := hugo.Data.bugs -}}
+  {{- $at := printf "data/bugs.yaml entry %d (%s)" (add $i 1) (or $b.id "<no id>") -}}
+  {{- range $k := slice "id" "title" "target" "status" -}}
+    {{- if not (index $b $k) }}{{ errorf "%s: missing required key %q" $at $k }}{{ end -}}
+  {{- end -}}
+  {{- with $b.target }}{{ if not (in $targets .) }}
+    {{- errorf "%s: target %q is not one of: %s" $at . (delimit $targets ", ") }}{{ end }}{{ end -}}
+  {{- with $b.status }}{{ if not (in $statuses .) }}
+    {{- errorf "%s: status %q is not one of: %s" $at . (delimit $statuses ", ") }}{{ end }}{{ end -}}
+  {{- with $b.impact }}{{ if not (in $impacts .) }}
+    {{- errorf "%s: impact %q is not one of: %s" $at . (delimit $impacts ", ") }}{{ end }}{{ end -}}
+  {{- with $b.credit }}{{ if not (reflect.IsSlice .) }}
+    {{- errorf "%s: credit must be a list of author keys, e.g. [matt]" $at }}{{ end }}{{ end -}}
+  {{/* A dead link here would be silent otherwise. A draft advisory is not a
+       page in a production build, so linking one fails the build -- which is
+       the point: do not ship a link to something unpublished. */}}
+  {{- with $b.advisory }}{{ if not (site.GetPage (printf "/advisories/%s" .)) }}
+    {{- errorf "%s: advisory %q matches no page under /advisories/. Use the page's filename slug, not its LNF id, and check it is not still a draft." $at . }}{{ end }}{{ end -}}
+  {{- with $b.id }}
+    {{- if in $seen . }}{{ errorf "%s: duplicate id %q" $at . }}{{ end -}}
+    {{- $seen = $seen | append . -}}
+  {{- end -}}
+{{- end -}}

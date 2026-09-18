@@ -1,0 +1,9 @@
+{{- /*
+  A page's authors, linked where the data file knows them.
+
+  There is deliberately no site-wide author prepended: this is an org site and
+  every page names its own.
+*/ -}}
+{{- with .Params.authors -}}
+<span class="byline">{{ partial "author-list.html" . }}</span>
+{{- end -}}

@@ -1,0 +1,13 @@
+{{- /*
+  The same resolution as byline.html, but plain text: for <meta name="author">
+  and anywhere markup would be wrong. Falls back to the org name.
+*/ -}}
+{{- $names := slice -}}
+{{- range .Params.authors -}}
+  {{- with index hugo.Data.authors . -}}
+    {{- $names = $names | append .name -}}
+  {{- else -}}
+    {{- $names = $names | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- if $names -}}{{ delimit $names ", " " and " }}{{- else -}}{{ site.Params.author }}{{- end -}}

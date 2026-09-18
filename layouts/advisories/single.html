@@ -1,0 +1,102 @@
+{{ define "main" }}
+{{/* The id has to keep resolving as a URL: anyone holding only LNF-2026-0001,
+     from a commit message or a changelog, should reach this page. Hugo builds
+     that redirect from `aliases`, which is hand-kept in sync with `id`, so
+     check it rather than trust it. */}}
+{{- with .Params.id }}
+  {{- $want := printf "advisories/%s" (lower .) -}}
+  {{- $found := false -}}
+  {{- range $.Params.aliases }}{{ if eq (strings.Trim . "/") $want }}{{ $found = true }}{{ end }}{{ end -}}
+  {{- if not $found }}
+    {{- errorf "%s: id is %q, so aliases must contain %q or that URL will 404" $.File.Path . (printf "/%s/" $want) }}
+  {{- end }}
+{{- end }}
+<article class="wrap post">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{- with .Description }}
+    <p class="post-description">{{ . }}</p>
+    {{- end }}
+    {{ partial "post-meta.html" . }}
+  </header>
+
+  {{/* Only reachable under `hugo server -D`: a production build omits drafts
+       entirely. */}}
+  {{- if .Draft }}
+  <p class="notice">Draft &mdash; not published. This page does not exist on the live site.</p>
+  {{- end }}
+
+  {{/* Rendered from front matter so every advisory has an identical,
+       machine-readable header. */}}
+
+  {{/* An advisory is `fixed` once every implementation it names has a release
+       carrying the fix. */}}
+  {{- $targets := .Params.targets -}}
+  {{- $status := "disclosed" -}}
+  {{- if $targets -}}
+    {{- $unfixed := 0 -}}
+    {{- range $targets }}{{ if not .fixed_in }}{{ $unfixed = add $unfixed 1 }}{{ end }}{{ end -}}
+    {{- if eq $unfixed 0 }}{{ $status = "fixed" }}{{ end -}}
+  {{- end }}
+
+  <div class="advisory-meta">
+    <dl>
+      {{- with .Params.id }}
+      <dt>ID</dt><dd class="advisory-id">{{ . }}</dd>
+      {{- end }}
+      {{- with .Params.severity }}
+      <dt>Severity</dt><dd>{{ partial "severity-badge.html" . }}</dd>
+      {{- end }}
+      <dt>Status</dt><dd>{{ partial "status-badge.html" $status }}</dd>
+      <dt>Disclosed</dt><dd>{{ .Date.Format "2006-01-02" }}</dd>
+      {{- with .Params.found_with }}
+      <dt>Discovered via</dt><dd>{{ . }}</dd>
+      {{- end }}
+    </dl>
+
+    {{/* One row per affected implementation. */}}
+    {{- with $targets }}
+    <div class="table-wrap advisory-targets">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Implementation</th>
+            <th>Affected</th>
+            <th>Fixed in</th>
+            <th class="col-date">Reported</th>
+            <th>CVE</th>
+            <th>Links</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- range . }}
+          <tr>
+            <td>{{ .impl }}</td>
+            <td>{{ with .affected }}{{ . }}{{ else }}<span aria-hidden="true">&mdash;</span>{{ end }}</td>
+            <td>{{ with .fixed_in }}{{ . }}{{ else }}<span aria-hidden="true">&mdash;</span>{{ end }}</td>
+            <td class="col-date">{{ with .reported }}{{ . }}{{ else }}<span aria-hidden="true">&mdash;</span>{{ end }}</td>
+            <td>{{ with .cve }}{{ . }}{{ else }}<span aria-hidden="true">&mdash;</span>{{ end }}</td>
+            <td class="bug-links">{{ partial "issue-links.html" . }}</td>
+          </tr>
+          {{- end }}
+        </tbody>
+      </table>
+    </div>
+    {{- end }}
+  </div>
+
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+
+  <footer class="post-footer">
+    {{- with .GetTerms "tags" }}
+    <ul class="tag-list">
+      {{- range . }}
+      <li><a href="{{ .RelPermalink }}">{{ .Page.Data.Term }}</a></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+  </footer>
+</article>
+{{ end }}

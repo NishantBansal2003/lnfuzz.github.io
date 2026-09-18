@@ -1,0 +1,19 @@
+{{- /*
+  Renders a list of author keys as linked names, resolved against
+  data/authors.yaml. An unknown key falls through to the raw string, so a
+  one-off contributor needs no entry there.
+
+  Takes the slice of keys. Shared by the page byline and the bug list's
+  credit column so the two never drift.
+*/ -}}
+{{- $keys := . -}}
+{{- range $i, $key := $keys -}}
+  {{- if $i }}, {{ end -}}
+  {{- with index hugo.Data.authors $key -}}
+    {{- $href := partial "author-url.html" . -}}
+    {{- if $href }}<a class="author-name" href="{{ $href }}" rel="author">{{ .name }}</a>
+    {{- else }}<span class="author-name">{{ .name }}</span>{{ end -}}
+  {{- else -}}
+    <span class="author-name">{{ $key }}</span>
+  {{- end -}}
+{{- end -}}

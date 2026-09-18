@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{- $page := . -}}
+{{- partial "validate-bugs.html" . -}}
+{{- $bugs := hugo.Data.bugs -}}
+{{- $impls := slice -}}
+{{- range $bugs }}{{ if ne .target "spec" }}{{ $impls = $impls | append .target }}{{ end }}{{ end -}}
+
+<div class="wrap">
+  <h1 class="page-title">{{ .Title }}</h1>
+  {{- with .Content }}
+  <div class="intro">{{ . }}</div>
+  {{- end }}
+
+  <p class="term-count">
+    {{ len $bugs }} bugs &middot; {{ len (where $bugs "status" "fixed") }} fixed &middot;
+    {{ len (uniq $impls) }} implementations
+  </p>
+
+  {{ partial "bug-table.html" (dict "bugs" $bugs "page" $page) }}
+</div>
+{{ end }}

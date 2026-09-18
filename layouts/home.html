@@ -1,0 +1,45 @@
+{{ define "main" }}
+{{- $bugs := hugo.Data.bugs -}}
+{{- $advisories := where site.RegularPages "Section" "advisories" -}}
+{{- $posts := where site.RegularPages "Section" "posts" -}}
+
+<div class="wrap">
+  <section class="hero">
+    {{ (resources.Get "logo/mark.svg").Content | safeHTML }}
+    <h1 class="hero-title">{{ site.Title }}</h1>
+    <p class="hero-tagline">{{ site.Params.tagline }}</p>
+    {{- with .Content }}
+    <div class="hero-lede">{{ . }}</div>
+    {{- end }}
+  </section>
+
+  {{ partial "findings-strip.html" (dict "bugs" $bugs "advisories" $advisories) }}
+
+  {{- with first 3 $advisories }}
+  <section class="section-block">
+    <h2 class="section-heading">Latest advisories</h2>
+    {{- range . }}
+    {{ partial "post-summary.html" . }}
+    {{- end }}
+    <p class="more-link"><a href="{{ "advisories/" | relURL }}">All advisories</a></p>
+  </section>
+  {{- end }}
+
+  {{- with first 3 $posts }}
+  <section class="section-block">
+    <h2 class="section-heading">Latest posts</h2>
+    {{- range . }}
+    {{ partial "post-summary.html" . }}
+    {{- end }}
+    <p class="more-link"><a href="{{ "posts/" | relURL }}">All {{ len $posts }} posts</a></p>
+  </section>
+  {{- end }}
+
+  <section class="section-block">
+    <h2 class="section-heading">Projects</h2>
+    {{- range where site.RegularPages "Section" "projects" }}
+    {{ partial "project-card.html" . }}
+    {{- end }}
+  </section>
+</div>
+{{ end }}

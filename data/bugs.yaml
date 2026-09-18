@@ -1,0 +1,318 @@
+# Bugs found by lnfuzz projects, rendered at /bugs/ and on project pages.
+#
+# Validated at build time by layouts/bugs.html, which fails the build on a
+# missing id/title/target/status or on a value outside these enums:
+#
+#   target:  lnd | cln | ldk | eclair | spec
+#   status:  fixed | reported | wontfix
+#   impact:  theft | grief | dos | crash | debug-assert | ub | uninit |
+#            liveness | spec
+#
+# `found_with` is how the bug was discovered. Optional. /projects/smite/ renders
+# the entries whose value is `smite`.
+#
+# `credit` is a list of keys from data/authors.yaml naming whoever investigated
+# and reported that bug. An unknown key renders as a plain name, so someone with
+# no entry there still gets credited.
+#
+# `advisory` is the slug of a page under /advisories/, not its LNF id.
+#
+# `fix` takes one URL or a list of them.
+
+- id: lnd-gossiper-shutdown-deadlock
+  title: "Gossiper shutdown deadlock in `discovery`"
+  found_with: smite
+  target: lnd
+  status: fixed
+  impact: liveness
+  credit: [matt, nishant]
+  reported: 2026-02-02
+  fixed: 2026-02-04
+  fix: https://github.com/lightningnetwork/lnd/pull/10540
+
+- id: eclair-malformed-messages-silently-dropped
+  title: "Malformed messages silently dropped instead of closing the connection"
+  found_with: smite
+  target: eclair
+  status: fixed
+  impact: spec
+  credit: [matt]
+  reported: 2026-03-18
+  fixed: 2026-03-24
+  upstream: https://github.com/ACINQ/eclair/issues/3271
+  fix: https://github.com/ACINQ/eclair/pull/3273
+
+- id: bolt-incorrect-htlc-deductions-test-vectors
+  title: "Incorrect HTLC deductions in Appendix C/F test vectors"
+  found_with: audit
+  target: spec
+  status: reported
+  impact: spec
+  credit: [nishant]
+  reported: 2026-05-08
+  upstream: https://github.com/lightning/bolts/issues/1335
+
+- id: eclair-signature-verification-edge-cases
+  title: "Incorrect signature verification edge cases"
+  found_with: smite
+  target: eclair
+  status: fixed
+  impact: spec
+  credit: [matt]
+  reported: 2026-05-22
+  fixed: 2026-08-06
+  upstream: https://github.com/ACINQ/eclair/issues/3314
+  fix: https://github.com/ACINQ/eclair/pull/3341
+
+- id: lnd-signature-verification-edge-case
+  title: "Incorrect signature verification edge case"
+  found_with: smite
+  target: lnd
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-05-22
+  upstream: https://github.com/lightningnetwork/lnd/issues/10835
+
+- id: cln-openingd-funding-satoshis-assertion
+  title: "`openingd` crashes on assertion when `funding_satoshis` exceeds the wally maximum"
+  found_with: smite
+  target: cln
+  status: fixed
+  impact: crash
+  credit: [nishant]
+  reported: 2026-06-16
+  fixed: 2026-08-19
+  upstream: https://github.com/ElementsProject/lightning/issues/9225
+  fix: https://github.com/ElementsProject/lightning/pull/9368
+
+- id: cln-duplicate-funding-outpoint
+  title: "Duplicate funding outpoint creates channels with the same `channel_id`"
+  found_with: smite
+  target: cln
+  status: fixed
+  impact: spec
+  credit: [nishant]
+  reported: 2026-07-02
+  fixed: 2026-07-16
+  upstream: https://github.com/ElementsProject/lightning/issues/9274
+  fix: https://github.com/ElementsProject/lightning/pull/9318
+
+- id: ldk-delayed-payment-output-weight
+  title: "`to_self_delay` size omitted from `DelayedPaymentOutput` weight calculation"
+  found_with: smite
+  target: ldk
+  status: fixed
+  impact: debug-assert
+  credit: [matt]
+  reported: 2026-07-28
+  fixed: 2026-07-29
+  fix: https://git.rust-bitcoin.org/lightningdevkit/rust-lightning/pulls/4833
+
+- id: cln-marginal-feerate-overflow
+  title: "`marginal_feerate()` overflows instead of saturating"
+  found_with: smite
+  target: cln
+  status: fixed
+  impact: ub
+  credit: [matt]
+  reported: 2026-07-29
+  fixed: 2026-08-19
+  fix: https://github.com/ElementsProject/lightning/pull/9365
+
+- id: cln-connectd-peer-spoke-zombie
+  title: "Zombie connection after `lightningd` ignores `connectd_peer_spoke`"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: liveness
+  credit: [matt]
+  reported: 2026-08-01
+  upstream: https://github.com/ElementsProject/lightning/issues/9369
+
+- id: cln-dust-limit-below-minimum
+  title: "Failure to reject `dust_limit_satoshis` below 354 sat"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-08-11
+  upstream: https://github.com/ElementsProject/lightning/issues/9403
+
+- id: eclair-funding-satoshis-above-max-money
+  title: "Failure to reject `funding_satoshis > MAX_MONEY`"
+  found_with: smite
+  target: eclair
+  status: fixed
+  impact: spec
+  credit: [matt]
+  reported: 2026-08-12
+  fixed: 2026-08-13
+  upstream: https://github.com/ACINQ/eclair/issues/3349
+  fix: https://github.com/ACINQ/eclair/pull/3352
+
+- id: eclair-reserve-vs-dust-limit
+  title: "Failure to validate `channel_reserve_satoshis` against `dust_limit_satoshis`"
+  found_with: smite
+  target: eclair
+  status: fixed
+  impact: spec
+  credit: [matt]
+  reported: 2026-08-12
+  fixed: 2026-08-13
+  upstream: https://github.com/ACINQ/eclair/issues/3350
+  fix: https://github.com/ACINQ/eclair/pull/3352
+
+- id: lnd-absent-channel-type
+  title: "Absent `channel_type` TLV negotiates a legacy channel"
+  found_with: smite
+  target: lnd
+  status: fixed
+  impact: spec
+  credit: [nishant]
+  reported: 2026-08-12
+  fixed: 2026-08-31
+  fix: https://github.com/lightningnetwork/lnd/pull/11064
+
+- id: cln-scid-alias-on-announced-channel
+  title: "Failure to reject `option_scid_alias` on an announced channel"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [nishant]
+  reported: 2026-08-23
+  upstream: https://github.com/ElementsProject/lightning/issues/9444
+
+- id: ldk-absurdly-high-channel-reserves
+  title: "Failure to reject absurdly high channel reserves"
+  found_with: smite
+  target: ldk
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-08-26
+  upstream: https://git.rust-bitcoin.org/lightningdevkit/rust-lightning/issues/4931
+
+- id: lnd-absurdly-high-channel-feerates
+  title: "Failure to reject absurdly high channel feerates"
+  found_with: smite
+  target: lnd
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-08-31
+  upstream: https://github.com/lightningnetwork/lnd/issues/11149
+
+- id: cln-absurdly-high-channel-reserves
+  title: "Failure to reject absurdly high channel reserves"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [nishant]
+  reported: 2026-09-02
+  upstream: https://github.com/ElementsProject/lightning/issues/9475
+
+- id: eclair-scid-alias-on-announced-channel
+  title: "Failure to reject `option_scid_alias` on an announced channel"
+  found_with: smite
+  target: eclair
+  status: reported
+  impact: spec
+  credit: [nishant]
+  reported: 2026-09-03
+  upstream: https://github.com/ACINQ/eclair/issues/3374
+
+- id: cln-tx-sigs-allowed-uninitialized
+  title: "`channeld` leaves `tx_sigs_allowed` uninitialized on startup"
+  found_with: smite
+  target: cln
+  status: fixed
+  impact: uninit
+  credit: [erick]
+  reported: 2026-09-08
+  fixed: 2026-09-14
+  fix: https://github.com/ElementsProject/lightning/pull/9483
+
+- id: cln-dualopend-reconnected-uninitialized
+  title: "`dualopend` leaves `state->reconnected` uninitialized on startup"
+  found_with: smite
+  target: cln
+  status: fixed
+  impact: uninit
+  credit: [erick]
+  reported: 2026-09-08
+  fixed: 2026-09-16
+  fix: https://github.com/ElementsProject/lightning/pull/9484
+
+- id: cln-funder-cannot-afford-commitment-fee
+  title: "Failure to reject `open_channel` where the funder cannot pay the commitment fee"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-09-09
+  upstream: https://github.com/ElementsProject/lightning/issues/9491
+
+- id: cln-tx-add-output-above-supply
+  title: "Failure to reject `tx_add_output` amounts above the total bitcoin supply"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: crash
+  credit: [erick]
+  reported: 2026-09-10
+  upstream: https://github.com/ElementsProject/lightning/issues/9492
+
+- id: lnd-empty-channel-type
+  title: "Empty `channel_type` TLV negotiates a legacy channel"
+  found_with: smite
+  target: lnd
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-09-14
+  upstream: https://github.com/lightningnetwork/lnd/issues/11195
+
+- id: cln-reserve-below-own-dust-limit
+  title: "`accept_channel` sets `channel_reserve_satoshis` below our own `dust_limit_satoshis`"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: crash
+  credit: [matt]
+  reported: 2026-09-14
+  upstream: https://github.com/ElementsProject/lightning/issues/9515
+
+- id: eclair-funder-cannot-afford-commitment-fee
+  title: "Failure to reject `open_channel` where the funder cannot pay the commitment fee"
+  found_with: smite
+  target: eclair
+  status: reported
+  impact: spec
+  credit: [matt]
+  reported: 2026-09-15
+  upstream: https://github.com/ACINQ/eclair/issues/3383
+
+- id: lnd-initial-commitment-zero-feerate
+  title: "Failure to reject `open_channel` with zero `feerate_per_kw`"
+  found_with: smite
+  target: lnd
+  status: reported
+  impact: grief
+  credit: [nishant]
+  reported: 2026-09-18
+  upstream: github.com/lightningnetwork/lnd/issues/11201
+
+- id: cln-openingd-zero-funding-txid-abort
+  title: "openingd aborts on `funding_created` with a zero `funding_txid`"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: crash
+  credit: [nishant]
+  reported: 2026-09-18
+  upstream: https://github.com/ElementsProject/lightning/issues/9530

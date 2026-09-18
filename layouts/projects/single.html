@@ -1,0 +1,38 @@
+{{ define "main" }}
+{{- $page := . -}}
+{{/* A project page catalogs its own findings: same data file as /bugs/,
+     filtered to this project's `found_with` key. */}}
+{{- $key := .Params.found_with -}}
+{{- $bugs := slice -}}
+{{- $advisories := slice -}}
+{{- with $key }}
+  {{- $bugs = where hugo.Data.bugs "found_with" . -}}
+  {{- $advisories = where (where site.RegularPages "Section" "advisories") "Params.found_with" . -}}
+{{- end }}
+
+<article class="wrap page">
+  <h1 class="page-title">{{ .Title }}</h1>
+  {{- with .Description }}
+  <p class="post-description">{{ . }}</p>
+  {{- end }}
+
+  {{- with .Params.source }}
+  <p class="project-source"><a href="{{ . }}">{{ strings.TrimPrefix "https://" . }}</a></p>
+  {{- end }}
+
+  {{- with $key }}
+  {{ partial "findings-strip.html" (dict "bugs" $bugs "advisories" $advisories) }}
+  {{- end }}
+
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+
+  {{- with $bugs }}
+  <section class="section-block">
+    {{ partial "bug-table.html" (dict "bugs" . "page" $page) }}
+    <p class="more-link"><a href="{{ "bugs/" | relURL }}">All bugs</a></p>
+  </section>
+  {{- end }}
+</article>
+{{ end }}

@@ -1,0 +1,19 @@
+<!--
+  The mark as it appears in the site header, inlined by
+  layouts/_partials/site-header.html.
+
+  currentColor, so it tracks the wordmark's colour on hover. This is why the
+  mark is inlined rather than referenced with <img>: an SVG loaded through
+  <img> is an isolated document and cannot inherit colour from the page.
+
+  aria-hidden, because the word "lnfuzz" sits immediately beside it and a label
+  here would make a screen reader announce the site twice.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+     class="site-mark" fill="currentColor" aria-hidden="true" focusable="false">
+  <path d="M0 20V0h20v7H7v13Z"/>
+  <path d="M64 20V0H44v7h13v13Z"/>
+  <path d="M64 44v20H44v-7h13V44Z"/>
+  <path d="M0 44v20h20v-7H7V44Z"/>
+  <path d="M35.9 12 19 34.9h9.8L28.1 52 45 29.1h-9.7Z"/>
+</svg>

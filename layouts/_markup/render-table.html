@@ -1,0 +1,28 @@
+{{- /*
+  Wraps markdown tables so a wide one scrolls inside its own box instead of
+  forcing the page to scroll horizontally on a phone. The hand-built tables in
+  bugs.html and advisories/list.html need their own .table-wrap; this hook only
+  sees tables that came from markdown.
+*/ -}}
+<div class="table-wrap">
+  <table>
+    <thead>
+      {{- range .THead }}
+      <tr>
+        {{- range . }}
+        <th{{ with .Alignment }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</th>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </thead>
+    <tbody>
+      {{- range .TBody }}
+      <tr>
+        {{- range . }}
+        <td{{ with .Alignment }} style="text-align: {{ . }}"{{ end }}>{{ .Text }}</td>
+        {{- end }}
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
+</div>

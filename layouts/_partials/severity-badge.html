@@ -1,0 +1,8 @@
+{{- /* Severity badge. Takes the severity string. */ -}}
+{{- $class := "badge-open" -}}
+{{- if eq . "critical" -}}
+  {{- $class = "badge-critical" -}}
+{{- else if eq . "low" -}}
+  {{- $class = "badge-muted" -}}
+{{- end -}}
+<span class="badge {{ $class }}">{{ . }}</span>

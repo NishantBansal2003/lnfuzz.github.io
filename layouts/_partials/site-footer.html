@@ -1,0 +1,19 @@
+{{/* CC BY section 3(a)(1) requires the licence notice to travel with the work,
+     and this footer is how a reader learns the terms. MIT has no such
+     requirement and readers are not consuming the templates, so the site-code
+     licence is left to LICENSE in the repo. */}}
+<footer class="site-footer">
+  <div class="wrap">
+    <p>
+      Content is copyright its respective authors and licensed
+      <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>.
+    </p>
+    <p>
+      <a href="{{ "disclosure/" | relURL }}">Disclosure policy</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ "feed.xml" | relURL }}">Atom feed</a>
+      <span aria-hidden="true">/</span>
+      <a href="https://github.com/{{ site.Params.github }}">GitHub</a>
+    </p>
+  </div>
+</footer>

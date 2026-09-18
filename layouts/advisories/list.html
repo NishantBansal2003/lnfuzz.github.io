@@ -1,0 +1,41 @@
+{{ define "main" }}
+<div class="wrap">
+  <h1 class="page-title">{{ .Title }}</h1>
+  {{- with .Content }}
+  <div class="intro">{{ . }}</div>
+  {{- end }}
+
+  {{- if .Pages }}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th class="col-id">ID</th>
+          <th class="col-date">Date</th>
+          <th>Severity</th>
+          <th>Affects</th>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range .Pages }}
+        <tr>
+          <td class="col-id advisory-id">{{ with .Params.id }}{{ . }}{{ else }}&mdash;{{ end }}</td>
+          <td class="col-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></td>
+          <td>{{ with .Params.severity }}{{ partial "severity-badge.html" . }}{{ end }}</td>
+          <td>
+            {{- $impls := slice -}}
+            {{- range .Params.targets }}{{ with .impl }}{{ $impls = $impls | append . }}{{ end }}{{ end -}}
+            {{ delimit $impls ", " }}
+          </td>
+          <td><a href="{{ .RelPermalink }}">{{ .Title }}</a></td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+  {{- else }}
+  <p>No advisories published yet.</p>
+  {{- end }}
+</div>
+{{ end }}

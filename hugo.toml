@@ -1,0 +1,85 @@
+baseURL = 'https://lnfuzz.github.io/'
+locale = 'en-us'
+title = 'lnfuzz'
+copyright = 'the lnfuzz contributors'
+timeZone = 'America/Chicago'
+enableRobotsTXT = true
+
+[params]
+  description = 'Fuzzing the Lightning Network.'
+  tagline = 'Fuzzing the Lightning Network.'
+  # The org, not a person. Used only as fallback metadata: every page names its
+  # own authors via `authors:` front matter resolved against data/authors.yaml.
+  author = 'lnfuzz'
+  github = 'lnfuzz'
+
+[taxonomies]
+  tag = 'tags'
+
+# Without this, an absent `lastmod` falls through to :fileModTime, which would
+# stamp every page with the checkout's mtime and corrupt the feed and sitemap.
+[frontmatter]
+  lastmod = ['lastmod', 'date']
+
+[menus]
+  [[menus.main]]
+    name = 'Advisories'
+    pageRef = '/advisories'
+    weight = 10
+  [[menus.main]]
+    name = 'Bugs'
+    pageRef = '/bugs'
+    weight = 20
+  [[menus.main]]
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 30
+  [[menus.main]]
+    name = 'Smite'
+    pageRef = '/projects/smite'
+    weight = 40
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 50
+  [[menus.main]]
+    name = 'GitHub'
+    url = 'https://github.com/lnfuzz'
+    weight = 60
+
+[markup]
+  [markup.goldmark.renderer]
+    # No page contains raw HTML; keep it that way.
+    unsafe = false
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    tabWidth = 4
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+# Atom is not a built-in output format, so register one that writes /feed.xml.
+[mediaTypes]
+  [mediaTypes.'application/atom+xml']
+    suffixes = ['xml']
+
+[outputFormats]
+  [outputFormats.atom]
+    mediaType = 'application/atom+xml'
+    baseName = 'feed'
+    rel = 'alternate'
+    isPlainText = false
+
+[outputs]
+  home = ['html', 'atom']
+  # Suppress Hugo's default per-section and per-taxonomy RSS. The site has one
+  # feed, at /feed.xml, and nothing links to those index.xml files.
+  section = ['html']
+  taxonomy = ['html']
+  term = ['html']
+  page = ['html']
+
+[minify]
+  [minify.tdewolff.html]
+    keepQuotes = true

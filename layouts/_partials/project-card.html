@@ -1,0 +1,31 @@
+{{- /*
+  A project card, rendered from the project's own page. Takes the page.
+
+  The stat line counts the entries in data/bugs.yaml whose `found_with` matches
+  this project.
+*/ -}}
+{{- $p := . -}}
+{{- $bugs := slice -}}
+{{- with $p.Params.found_with }}{{ $bugs = where hugo.Data.bugs "found_with" . }}{{ end -}}
+{{- $impls := slice -}}
+{{- range $bugs }}{{ if ne .target "spec" }}{{ $impls = $impls | append .target }}{{ end }}{{ end -}}
+<div class="project-card">
+  <h3 class="project-card-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
+  {{- with $p.Description }}
+  <p>{{ . }}</p>
+  {{- end }}
+  {{- with $bugs }}
+  <p class="project-card-stat">
+    {{ len . }} bug{{ if ne (len .) 1 }}s{{ end }} found across
+    {{ len (uniq $impls) }} implementation{{ if ne (len (uniq $impls)) 1 }}s{{ end }},
+    {{ len (where . "status" "fixed") }} fixed.
+  </p>
+  {{- end }}
+  <p class="project-card-links">
+    <a href="{{ $p.RelPermalink }}">About {{ $p.Title }}</a>
+    {{- with $p.Params.source }}
+    <span aria-hidden="true">/</span>
+    <a href="{{ . }}">Source on GitHub</a>
+    {{- end }}
+  </p>
+</div>

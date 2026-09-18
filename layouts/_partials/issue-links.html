@@ -1,0 +1,22 @@
+{{- /*
+  Renders the upstream links for a bug entry or an advisory target.
+
+  Takes a map with optional `upstream` and `fix`. `fix` is one URL or a list of
+  them, because a fix sometimes takes several PRs. Emits an em-dash when there
+  is nothing to link.
+*/ -}}
+{{- $links := slice -}}
+{{- with .upstream }}{{ $links = $links | append (dict "label" "issue" "url" .) }}{{ end -}}
+{{- $fixes := .fix -}}
+{{- if reflect.IsSlice $fixes -}}
+  {{- range $n, $u := $fixes -}}
+    {{- $links = $links | append (dict "label" (printf "fix %d" (add $n 1)) "url" $u) -}}
+  {{- end -}}
+{{- else -}}
+  {{- with $fixes }}{{ $links = $links | append (dict "label" "fix" "url" .) }}{{ end -}}
+{{- end -}}
+{{- range $n, $l := $links -}}
+  {{- if $n }}<span aria-hidden="true">/</span>{{ end -}}
+  <a href="{{ $l.url }}">{{ $l.label }}</a>
+{{- end -}}
+{{- if not $links }}<span aria-hidden="true">&mdash;</span>{{ end -}}

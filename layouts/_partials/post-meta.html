@@ -1,0 +1,11 @@
+<p class="post-meta">
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+  {{- with partial "byline.html" . }}
+  <span class="sep" aria-hidden="true">/</span>
+  {{ . }}
+  {{- end }}
+  {{- if .Lastmod.After .Date }}
+  <span class="sep" aria-hidden="true">/</span>
+  <span class="updated">Updated {{ .Lastmod.Format "January 2, 2006" }}</span>
+  {{- end }}
+</p>

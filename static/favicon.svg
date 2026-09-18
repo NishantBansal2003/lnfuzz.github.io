@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Smite">
+  <title>Smite</title>
+  <g fill="#7A5CFF">
+    <path d="M0 20V0h20v7H7v13Z"/>
+    <path d="M64 20V0H44v7h13v13Z"/>
+    <path d="M64 44v20H44v-7h13V44Z"/>
+    <path d="M0 44v20h20v-7H7V44Z"/>
+  </g>
+  <path fill="#FFB020" d="M35.9 12 19 34.9h9.8L28.1 52 45 29.1h-9.7Z"/>
+</svg>

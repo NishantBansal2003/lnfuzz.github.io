@@ -1,0 +1,67 @@
+{{- /*
+  The bug list, grouped by implementation, newest first.
+
+  Takes a dict: `bugs` (the entries to render) and `page` (for RenderString,
+  which needs a page context to turn a title's backticks into <code>).
+
+  Rendered in two places over the same data file: /bugs/ passes everything,
+  and a project page passes only its own findings. Grouping by target rather
+  than by anything else because the reader's question is "am I affected?".
+*/ -}}
+{{- $bugs := .bugs -}}
+{{- $page := .page -}}
+{{- $targets := slice "lnd" "cln" "ldk" "eclair" "spec" -}}
+{{- $names := dict "lnd" "LND" "cln" "Core Lightning" "ldk" "LDK" "eclair" "Eclair" "spec" "BOLT spec" -}}
+
+{{- range $target := $targets }}
+{{- $group := where $bugs "target" $target }}
+{{- with sort $group "reported" "desc" }}
+<section class="bug-group">
+  <h2 class="bug-group-heading">
+    <span>{{ index $names $target }}</span>
+    <span class="bug-group-count">{{ len . }} &middot; {{ len (where . "status" "fixed") }} fixed</span>
+  </h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Bug</th>
+          <th>Impact</th>
+          <th>Status</th>
+          <th class="col-date">Reported</th>
+          <th>Credit</th>
+          <th>Links</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{- range . }}
+        <tr{{ if eq .status "wontfix" }} class="row-muted"{{ end }}>
+          <td class="bug-title">
+            {{- $title := $page.RenderString (dict "display" "inline") .title -}}
+            {{/* Resolve to the page and take its own .RelPermalink rather than
+                 assembling a path. A missing target is an errorf in
+                 validate-bugs.html; the title still renders, unlinked. */}}
+            {{- $adv := false -}}
+            {{- with .advisory }}{{ $adv = site.GetPage (printf "/advisories/%s" .) }}{{ end -}}
+            {{- with $adv -}}
+              <a href="{{ .RelPermalink }}">{{ $title }}</a>
+            {{- else -}}
+              {{ $title }}
+            {{- end -}}
+          </td>
+          <td>{{ with .impact }}{{ . }}{{ else }}<span aria-hidden="true">&mdash;</span>{{ end }}</td>
+          <td class="col-status">{{ partial "status-badge.html" .status }}</td>
+          <td class="col-date"><time datetime="{{ .reported }}">{{ .reported }}</time></td>
+          <td class="bug-credit">
+            {{- with .credit }}{{ partial "author-list.html" . }}
+            {{- else }}<span aria-hidden="true">&mdash;</span>{{ end -}}
+          </td>
+          <td class="bug-links">{{ partial "issue-links.html" . }}</td>
+        </tr>
+        {{- end }}
+      </tbody>
+    </table>
+  </div>
+</section>
+{{- end }}
+{{- end }}

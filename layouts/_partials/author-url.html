@@ -1,0 +1,11 @@
+{{- /*
+  The canonical link for an author entry from data/authors.yaml: an explicit
+  `url` if there is one, otherwise their GitHub profile, otherwise nothing.
+
+  Takes the resolved entry, not the key. Returns a string, possibly empty, so
+  callers guard with `with`.
+*/ -}}
+{{- $url := "" -}}
+{{- with .url }}{{ $url = . }}{{ end -}}
+{{- if not $url }}{{ with .github }}{{ $url = printf "https://github.com/%s" . }}{{ end }}{{ end -}}
+{{- $url -}}

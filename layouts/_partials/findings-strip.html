@@ -1,0 +1,29 @@
+{{- /*
+  Counted at build time, so it updates itself as the data file grows. No
+  JavaScript.
+
+  Takes a dict: `bugs` and `advisories`, already filtered by the caller. The
+  home page passes everything; a project page passes only its own.
+*/ -}}
+{{- $bugs := .bugs -}}
+{{- $advisories := .advisories -}}
+{{- $impls := slice -}}
+{{- range $bugs }}{{ if ne .target "spec" }}{{ $impls = $impls | append .target }}{{ end }}{{ end -}}
+<div class="findings">
+  <div class="finding">
+    <span class="finding-number">{{ len $bugs }}</span>
+    <span class="finding-label">bug{{ if ne (len $bugs) 1 }}s{{ end }} found</span>
+  </div>
+  <div class="finding finding-fixed">
+    <span class="finding-number">{{ len (where $bugs "status" "fixed") }}</span>
+    <span class="finding-label">fixed</span>
+  </div>
+  <div class="finding">
+    <span class="finding-number">{{ len $advisories }}</span>
+    <span class="finding-label">advisor{{ if eq (len $advisories) 1 }}y{{ else }}ies{{ end }}</span>
+  </div>
+  <div class="finding">
+    <span class="finding-number">{{ len (uniq $impls) }}</span>
+    <span class="finding-label">implementation{{ if ne (len (uniq $impls)) 1 }}s{{ end }}</span>
+  </div>
+</div>

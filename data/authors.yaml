@@ -1,0 +1,20 @@
+# Authors, keyed by the short name used in `authors:` front matter.
+#
+# A key that is absent here still renders: byline.html falls back to printing
+# the raw string, so a guest author needs no entry. Add one when you want the
+# name linked.
+
+matt:
+  name: Matt Morehouse
+  github: morehouse
+  url: https://morehouse.dev
+
+nishant:
+  name: Nishant Bansal
+  github: NishantBansal2003
+  url: https://nishantbansal2003.github.io
+
+erick:
+  name: Erick Cestari
+  github: erickcestari
+  url: https://erickcestari.dev
