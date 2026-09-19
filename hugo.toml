@@ -1,4 +1,4 @@
-baseURL = 'https://lnfuzz.github.io/'
+baseURL = 'https://lnfuzz.org/'
 locale = 'en-us'
 title = 'lnfuzz'
 copyright = 'the lnfuzz contributors'
