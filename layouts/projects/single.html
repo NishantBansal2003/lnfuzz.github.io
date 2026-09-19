@@ -30,7 +30,7 @@
 
   {{- with $bugs }}
   <section class="section-block">
-    {{ partial "bug-table.html" (dict "bugs" . "page" $page) }}
+    {{ partial "bug-table.html" (dict "bugs" . "page" $page "level" 3) }}
     <p class="more-link"><a href="{{ "bugs/" | relURL }}">All bugs</a></p>
   </section>
   {{- end }}

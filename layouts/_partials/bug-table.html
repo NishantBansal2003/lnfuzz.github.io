@@ -10,6 +10,10 @@
 */ -}}
 {{- $bugs := .bugs -}}
 {{- $page := .page -}}
+{{/* Heading level for the per-implementation groups. /bugs/ puts them directly
+     under the page h1, so h2; a project page nests them under its own
+     "Findings" h2, so h3. */}}
+{{- $level := default 2 .level -}}
 {{- $targets := slice "lnd" "cln" "ldk" "eclair" "spec" -}}
 {{- $names := dict "lnd" "LND" "cln" "Core Lightning" "ldk" "LDK" "eclair" "Eclair" "spec" "BOLT spec" -}}
 
@@ -17,10 +21,10 @@
 {{- $group := where $bugs "target" $target }}
 {{- with sort $group "reported" "desc" }}
 <section class="bug-group">
-  <h2 class="bug-group-heading">
+  <h{{ $level }} class="bug-group-heading">
     <span>{{ index $names $target }}</span>
     <span class="bug-group-count">{{ len . }} &middot; {{ len (where . "status" "fixed") }} fixed</span>
-  </h2>
+  </h{{ $level }}>
   <div class="table-wrap">
     <table class="data-table">
       <thead>
