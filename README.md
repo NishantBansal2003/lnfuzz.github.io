@@ -14,7 +14,7 @@ hugo --minify     # production build into public/
 ```
 
 The only dependency is [Hugo](https://gohugo.io/). Deployment is automatic:
-pushing to `main` runs `.github/workflows/deploy.yml` which builds with a
+pushing to `master` runs `.github/workflows/deploy.yml` which builds with a
 checksum-verified Hugo tarball and publishes.
 
 ## Layout
