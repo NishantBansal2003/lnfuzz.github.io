@@ -305,7 +305,7 @@
   impact: grief
   credit: [nishant]
   reported: 2026-09-18
-  upstream: github.com/lightningnetwork/lnd/issues/11201
+  upstream: https://github.com/lightningnetwork/lnd/issues/11201
 
 - id: cln-openingd-zero-funding-txid-abort
   title: "openingd aborts on `funding_created` with a zero `funding_txid`"
