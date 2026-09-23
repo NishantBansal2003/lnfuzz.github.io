@@ -22,6 +22,10 @@
     {{- errorf "%s: impact %q is not one of: %s" $at . (delimit $impacts ", ") }}{{ end }}{{ end -}}
   {{- with $b.credit }}{{ if not (reflect.IsSlice .) }}
     {{- errorf "%s: credit must be a list of author keys, e.g. [matt]" $at }}{{ end }}{{ end -}}
+  {{/* Nothing is listed here that has not been filed with the affected project
+       first, so every entry points at the issue or at the fix. */}}
+  {{- if not (or $b.fix $b.upstream) }}
+    {{- errorf "%s: needs an upstream issue or a fix URL (`upstream` or `fix`)" $at }}{{ end -}}
   {{/* A dead link here would be silent otherwise. A draft advisory is not a
        page in a production build, so linking one fails the build -- which is
        the point: do not ship a link to something unpublished. */}}
