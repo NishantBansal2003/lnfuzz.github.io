@@ -25,6 +25,15 @@ crashes and assertion failures, memory safety errors, and more.
 **[smite](/projects/smite/)** is a coverage-guided snapshot fuzzer that drives
 all four implementations through the peer protocol.
 
+## What we publish
+
+Every finding on this site traces back to one of [our tools](/projects/).
+Most were found by a tool directly.
+The rest are secondary findings: something discovered during development of the tool, variant analysis after a direct finding, or some other follow-up work motivated by one of our tools.
+A finding with no such trace belongs somewhere else, however good it is; there is far more Lightning Network security research than we could usefully republish.
+
+Every advisory describes what led to the finding so that the link to our tools is clear.
+
 ## Contact
 
 For any problem with this site, including a correction to an advisory, create an
