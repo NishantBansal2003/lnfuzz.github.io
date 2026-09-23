@@ -28,4 +28,8 @@ targets:
     cve: ""
 authors: []
 tags: []
+# Every advisory carries a "## Discovery" section. Describe how a tool from
+# /projects/ led to the discovery of this bug, directly or indirectly.
 ---
+
+## Discovery
