@@ -42,6 +42,18 @@
   fix: https://github.com/ACINQ/eclair/pull/3264
   advisory: eclair-feature-parsing-dos
 
+- id: eclair-zlib-decompression-dos
+  title: "Unbounded zlib decompression of channel queries"
+  found_with: variant-analysis
+  target: eclair
+  status: fixed
+  impact: dos
+  credit: [matt]
+  reported: 2026-03-06
+  fixed: 2026-03-11
+  fix: https://github.com/ACINQ/eclair/pull/3263
+  advisory: eclair-zlib-decompression-dos
+
 - id: eclair-malformed-messages-silently-dropped
   title: "Malformed messages silently dropped instead of closing the connection"
   found_with: smite
