@@ -348,3 +348,23 @@
   credit: [nishant]
   reported: 2026-09-23
   fix: https://github.com/ElementsProject/lightning/pull/9550
+
+- id: cln-splice-contribution-exceeds-balance
+  title: "Failure to reject a splice contribution that takes out more than the peer's balance"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [erick]
+  reported: 2026-09-24
+  upstream: https://github.com/ElementsProject/lightning/issues/9566
+
+- id: cln-tx-init-rbf-after-splice-locked
+  title: "Failure to reject `tx_init_rbf` after the peer sent `splice_locked`"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [erick]
+  reported: 2026-09-24
+  upstream: https://github.com/ElementsProject/lightning/issues/9570
