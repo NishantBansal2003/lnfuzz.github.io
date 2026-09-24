@@ -30,6 +30,18 @@
   fixed: 2026-02-04
   fix: https://github.com/lightningnetwork/lnd/pull/10540
 
+- id: eclair-feature-parsing-dos
+  title: "Feature bit parsing allocates per bit"
+  found_with: smite
+  target: eclair
+  status: fixed
+  impact: dos
+  credit: [matt]
+  reported: 2026-03-05
+  fixed: 2026-03-17
+  fix: https://github.com/ACINQ/eclair/pull/3264
+  advisory: eclair-feature-parsing-dos
+
 - id: eclair-malformed-messages-silently-dropped
   title: "Malformed messages silently dropped instead of closing the connection"
   found_with: smite
