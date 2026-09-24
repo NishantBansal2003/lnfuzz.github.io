@@ -316,3 +316,23 @@
   credit: [nishant]
   reported: 2026-09-18
   upstream: https://github.com/ElementsProject/lightning/issues/9530
+
+- id: cln-wrap-onionreply-null-to-libsodium
+  title: "`wrap_onionreply()` passes an empty reply's `NULL` contents as libsodium's nonnull output"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: ub
+  credit: [nishant]
+  reported: 2026-09-23
+  fix: https://github.com/ElementsProject/lightning/pull/9551
+
+- id: cln-reply-channel-range-missing-encoding-type
+  title: "`reply_channel_range` for an unknown chain omits the `encoded_short_ids` encoding type"
+  found_with: smite
+  target: cln
+  status: reported
+  impact: spec
+  credit: [nishant]
+  reported: 2026-09-23
+  fix: https://github.com/ElementsProject/lightning/pull/9550
