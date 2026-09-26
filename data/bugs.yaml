@@ -20,15 +20,18 @@
 # `fix` takes one URL or a list of them.
 
 - id: lnd-gossiper-shutdown-deadlock
-  title: "Gossiper shutdown deadlock in `discovery`"
+  title: "Malformed `channel_announcement` flood stalls the gossiper"
   found_with: smite
   target: lnd
   status: fixed
   impact: liveness
   credit: [matt, nishant]
   reported: 2026-02-02
-  fixed: 2026-02-04
-  fix: https://github.com/lightningnetwork/lnd/pull/10540
+  fixed: 2026-04-11
+  fix:
+    - https://github.com/lightningnetwork/lnd/pull/10540
+    - https://github.com/lightningnetwork/lnd/pull/10589
+  advisory: lnd-gossip-validation-barrier-stall
 
 - id: eclair-feature-parsing-dos
   title: "Feature bit parsing allocates per bit"
