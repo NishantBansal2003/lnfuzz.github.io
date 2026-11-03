@@ -235,11 +235,13 @@
   title: "Failure to reject absurdly high channel feerates"
   found_with: smite
   target: lnd
-  status: reported
+  status: fixed
   impact: spec
   credit: [matt]
   reported: 2026-08-31
+  fixed: 2026-10-30
   upstream: https://github.com/lightningnetwork/lnd/issues/11149
+  fix: https://github.com/lightningnetwork/lnd/pull/11151
 
 - id: cln-absurdly-high-channel-reserves
   title: "Failure to reject absurdly high channel reserves"
@@ -297,11 +299,13 @@
   title: "Failure to reject `tx_add_output` amounts above the total bitcoin supply"
   found_with: smite
   target: cln
-  status: reported
+  status: fixed
   impact: crash
   credit: [erick]
   reported: 2026-09-10
+  fixed: 2026-10-14
   upstream: https://github.com/ElementsProject/lightning/issues/9492
+  fix: https://github.com/ElementsProject/lightning/pull/9493
 
 - id: lnd-empty-channel-type
   title: "Empty `channel_type` TLV negotiates a legacy channel"
@@ -339,11 +343,13 @@
   title: "Failure to reject `open_channel` with zero `feerate_per_kw`"
   found_with: smite
   target: lnd
-  status: reported
+  status: fixed
   impact: grief
   credit: [nishant]
   reported: 2026-09-18
+  fixed: 2026-10-20
   upstream: https://github.com/lightningnetwork/lnd/issues/11201
+  fix: https://github.com/lightningnetwork/lnd/pull/11373
 
 - id: cln-openingd-zero-funding-txid-abort
   title: "openingd aborts on `funding_created` with a zero `funding_txid`"
