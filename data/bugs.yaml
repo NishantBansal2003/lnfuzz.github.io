@@ -115,12 +115,13 @@
   found_with: smite
   target: cln
   status: fixed
-  impact: spec
+  impact: dos
   credit: [nishant]
   reported: 2026-07-02
   fixed: 2026-07-16
   upstream: https://github.com/ElementsProject/lightning/issues/9274
   fix: https://github.com/ElementsProject/lightning/pull/9318
+  advisory: cln-duplicate-funding-outpoint-dos
 
 - id: eclair-open-channel-race-dos
   title: "`open_channel` race orphans channel actors"
